@@ -59,7 +59,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   const url = changeInfo?.url;
   if (url && url.includes(FORMSG_ADMINFORM_PATH)) {
-    const formId = url.split(FORMSG_ADMINFORM_PATH)[1];
+    const formId = url.split(FORMSG_ADMINFORM_PATH + "/")[1];
     lastFormId = formId;
     if (tabId === lastTabId) {
       // user just downloaded a key, go store key to storage
@@ -77,7 +77,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         chrome.runtime.sendMessage(undefined, {
           command: SET_ID,
           formId: formId,
-          key: result.key,
+          key: keyPairResult[formId],
         });
       });
       return;
