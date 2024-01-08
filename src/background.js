@@ -1,8 +1,12 @@
-import { GET_KEY, SET_ID } from "./constants";
-
-const FORMSG_PROD_DOMAIN = "form.gov.sg";
-const FORMSG_DASHBOARD_PATH = "/dashboard";
-const FORMSG_ADMINFORM_PATH = "/admin/form";
+import { getKeyFromStorage } from "./keys.utils";
+import { getFormIdFromAdminUrl } from "./url.utils";
+import {
+  GET_KEY,
+  SET_ID,
+  FORMSG_ADMINFORM_PATH,
+  FORMSG_PROD_DOMAIN,
+  FORMSG_DASHBOARD_PATH,
+} from "./constants";
 
 let lastTabId = -1;
 let lastFormId = -1;
@@ -56,11 +60,10 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   const url = changeInfo?.url;
   if (url && url.includes(FORMSG_ADMINFORM_PATH)) {
-    const formId = url.split(FORMSG_ADMINFORM_PATH + "/")[1];
-    lastFormId = formId;
+    const formId = getFormIdFromAdminUrl(url);
     if (tabId === lastTabId) {
       // user just downloaded a key, go store key to storage
       const keyPair = { [formId]: lastKey };
@@ -72,13 +75,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
       return;
     } else {
       // user enter normal form page, go get key from storage
-      chrome.storage.local.get([formId]).then((keyPairResult) => {
-        console.log({ keyPairResult });
-        chrome.runtime.sendMessage(undefined, {
-          command: SET_ID,
-          formId: formId,
-          key: keyPairResult[formId],
-        });
+      const key = await getKeyFromStorage(formId);
+
+      chrome.runtime.sendMessage(undefined, {
+        command: SET_ID,
+        formId,
+        key,
       });
       return;
     }
