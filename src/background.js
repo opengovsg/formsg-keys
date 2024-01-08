@@ -1,3 +1,5 @@
+import { GET_KEY, SET_ID } from "./constants";
+
 const FORMSG_PROD_DOMAIN = "form.gov.sg";
 const FORMSG_DASHBOARD_PATH = "/dashboard";
 const FORMSG_ADMINFORM_PATH = "/admin/form";
@@ -17,11 +19,10 @@ function handleCreate(createdItem) {
       lastKey = data;
     }
 
-    console.log({ tabs, chromeTabs: chrome.tabs });
     lastTabId = tabs[0].id;
     chrome.tabs.sendMessage(
       tabs[0].id,
-      { command: "GET_KEY" },
+      { command: GET_KEY },
       undefined,
       callback
     );
@@ -62,19 +63,19 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     lastFormId = formId;
     if (tabId === lastTabId) {
       // user just downloaded a key, go store key to storage
-      const data = { [formId]: lastKey };
-      console.log(data);
-      chrome.storage.local.set(data, () => {
+      const keyPair = { [formId]: lastKey };
+      console.log(keyPair);
+      chrome.storage.local.set(keyPair, () => {
         console.log("Data was saved in storage");
       });
       resetKey();
       return;
     } else {
       // user enter normal form page, go get key from storage
-      chrome.storage.local.get([formId]).then((result) => {
-        console.log({ result });
+      chrome.storage.local.get([formId]).then((keyPairResult) => {
+        console.log({ keyPairResult });
         chrome.runtime.sendMessage(undefined, {
-          command: "SET_ID",
+          command: SET_ID,
           formId: formId,
           key: result.key,
         });
