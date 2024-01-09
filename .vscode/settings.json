@@ -3,7 +3,7 @@
         "**/node_modules": true,
         "**/bower_components": true,
         "**/*.code-search": true,
-        "./build": true,
+        "build/*": true,
     },
     "editor.formatOnSave": true
 }
