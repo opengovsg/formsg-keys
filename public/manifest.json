@@ -20,7 +20,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "hello.html",
+    "default_popup": "app.html",
     "default_icon": "icons/brand.png"
   },
   "permissions": [
