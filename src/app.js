@@ -18,9 +18,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
-  const url = tab[0].url;
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const url = tab.url;
   const formId = getFormIdFromAdminUrl(url);
+  if (!formId) {
+    return;
+  }
   const key = await getKeyFromStorage(formId);
   setKeyToContent(formId, key);
 });
