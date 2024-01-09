@@ -7,7 +7,7 @@ function setKeyToContent(formId, key) {
   localstore[formId] = key;
   localstore["currentId"] = formId;
   document.getElementById("formId").innerHTML = formId;
-  document.getElementById("key").innerHTML = key;
+  document.getElementById("key").innerHTML = key || "No key found";
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
