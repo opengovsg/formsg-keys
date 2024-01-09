@@ -16,10 +16,14 @@ function resetKey() {
   lastTabId = -1;
   lastKey = -1;
 }
-function handleCreate(createdItem) {
+function handleDownloadCreated(createdItem) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     function callback(data) {
       lastKey = data;
+    }
+
+    if (!tabs[0].url.includes(FORMSG_DASHBOARD_PATH)) {
+      return;
     }
 
     lastTabId = tabs[0].id;
@@ -31,7 +35,7 @@ function handleCreate(createdItem) {
     );
   });
 }
-chrome.downloads.onCreated.addListener(handleCreate);
+chrome.downloads.onCreated.addListener(handleDownloadCreated);
 
 const RULE_NEW_ENCRYPTED_FORM = {
   conditions: [
@@ -87,9 +91,10 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  const { status, url } = changeInfo;
+  const { status } = changeInfo;
+  const { url } = tab;
 
-  if (status !== "loading" || !url) {
+  if (status !== "loading") {
     return;
   }
 
@@ -122,28 +127,33 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  const { status, url } = changeInfo;
+  const { status } = changeInfo;
+  const { url } = tab;
 
-  chrome.action.setBadgeText({ text: "", tabId });
-  if (status !== "loading" || !url) {
+  if (status !== "loading") {
     return;
   }
 
-  if (url.includes(FORMSG_ADMINFORM_PATH)) {
-    const formId = getFormIdFromAdminUrl(url);
+  if (!url.includes(FORMSG_ADMINFORM_PATH)) {
+    chrome.action.setBadgeText({ text: "", tabId });
+  }
 
-    console.log({ formId });
-    if (!formId) {
-      return;
-    }
+  const formId = getFormIdFromAdminUrl(url);
 
-    // user enter normal form page, go get key from storage
-    const key = await getKeyFromStorage(formId);
+  if (!formId) {
+    return;
+  }
 
-    if (key) {
-      chrome.action.setBadgeBackgroundColor({ color: "#4A61C0", tabId });
-      chrome.action.setBadgeTextColor({ color: "#E2E8F0", tabId });
-      chrome.action.setBadgeText({ text: "Fill", tabId });
-    }
+  // user enter normal form page, go get key from storage
+  const key = await getKeyFromStorage(formId);
+
+  if (key) {
+    chrome.action.setBadgeBackgroundColor({ color: "#4A61C0", tabId });
+    chrome.action.setBadgeTextColor({ color: "#E2E8F0", tabId });
+    chrome.action.setBadgeText({ text: "Key", tabId });
+  } else {
+    chrome.action.setBadgeBackgroundColor({ color: "#E2E8F0", tabId });
+    chrome.action.setBadgeTextColor({ color: "#445072", tabId });
+    chrome.action.setBadgeText({ text: "None", tabId });
   }
 });
