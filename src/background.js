@@ -4,8 +4,9 @@ import {
   GET_KEY,
   SET_ID,
   FORMSG_ADMINFORM_PATH,
-  FORMSG_PROD_DOMAIN,
+  FORMSG_DOMAIN,
   FORMSG_DASHBOARD_PATH,
+  FORMSG_LOCALDEV_DOMAIN,
 } from "./constants";
 
 let lastTabId = -1;
@@ -38,14 +39,41 @@ const RULE_NEW_ENCRYPTED_FORM = {
   conditions: [
     new chrome.declarativeContent.PageStateMatcher({
       pageUrl: {
-        hostSuffix: FORMSG_PROD_DOMAIN,
+        hostSuffix: FORMSG_DOMAIN,
         pathContains: FORMSG_DASHBOARD_PATH,
       },
       css: ["code.chakra-code"],
     }),
     new chrome.declarativeContent.PageStateMatcher({
       pageUrl: {
-        hostSuffix: FORMSG_PROD_DOMAIN,
+        hostSuffix: FORMSG_DOMAIN,
+        pathContains: FORMSG_DASHBOARD_PATH,
+      },
+      css: ["[name='secretKey']"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_DOMAIN,
+        pathContains: FORMSG_ADMINFORM_PATH,
+      },
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_LOCALDEV_DOMAIN,
+        pathContains: FORMSG_DASHBOARD_PATH,
+      },
+      css: ["code.chakra-code"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_LOCALDEV_DOMAIN,
+        pathContains: FORMSG_DASHBOARD_PATH,
+      },
+      css: ["[name='secretKey']"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_LOCALDEV_DOMAIN,
         pathContains: FORMSG_ADMINFORM_PATH,
       },
     }),
