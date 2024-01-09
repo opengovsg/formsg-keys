@@ -1,19 +1,14 @@
 import { getKeyFromStorage } from "./keys.utils";
-import { PAGE_NAV, SET_ID, INSERT_KEY } from "./constants";
+import { SET_ID, INSERT_KEY } from "./constants";
 import { getFormIdFromAdminUrl } from "./url.utils";
 
 const localstore = {};
 function setKeyToContent(formId, key) {
   localstore[formId] = key;
   localstore["currentId"] = formId;
-  document.getElementById("content").innerHTML = `${formId}: ${key}`;
+  document.getElementById("formId").innerHTML = formId;
+  document.getElementById("key").innerHTML = key;
 }
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.command === PAGE_NAV) {
-    document.getElementById("content").innerHTML = request.url;
-  }
-});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.command === SET_ID) {
@@ -48,6 +43,8 @@ document
   .getElementById("insertkey-btn")
   .addEventListener("click", handleInsertKey);
 
+document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
+
 function handleInsertKey() {
   const { currentId } = localstore;
   if (currentId) {
@@ -59,4 +56,9 @@ function handleInsertKey() {
       });
     });
   }
+}
+
+function handleCopyKey() {
+  const valueToCopy = document.getElementById("key").innerText;
+  navigator.clipboard.writeText(valueToCopy);
 }
