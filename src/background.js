@@ -10,12 +10,10 @@ import {
 } from "./constants";
 
 let lastTabId = -1;
-let lastFormId = -1;
 let lastKey = -1;
 
 function resetKey() {
   lastTabId = -1;
-  lastFormId = -1;
   lastKey = -1;
 }
 function handleCreate(createdItem) {
@@ -89,9 +87,15 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  const url = changeInfo?.url;
-  if (url && url.includes(FORMSG_ADMINFORM_PATH)) {
+  const { status, url } = changeInfo;
+
+  if (status !== "loading" || !url) {
+    return;
+  }
+
+  if (url.includes(FORMSG_ADMINFORM_PATH)) {
     const formId = getFormIdFromAdminUrl(url);
+
     if (tabId === lastTabId) {
       // user just downloaded a key, go store key to storage
       const keyPair = { [formId]: lastKey };
@@ -105,12 +109,41 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       // user enter normal form page, go get key from storage
       const key = await getKeyFromStorage(formId);
 
-      chrome.runtime.sendMessage(undefined, {
-        command: SET_ID,
-        formId,
-        key,
-      });
+      chrome.runtime
+        .sendMessage(undefined, {
+          command: SET_ID,
+          formId,
+          key,
+        })
+        .catch((err) => {});
       return;
+    }
+  }
+});
+
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const { status, url } = changeInfo;
+
+  chrome.action.setBadgeText({ text: "", tabId });
+  if (status !== "loading" || !url) {
+    return;
+  }
+
+  if (url.includes(FORMSG_ADMINFORM_PATH)) {
+    const formId = getFormIdFromAdminUrl(url);
+
+    console.log({ formId });
+    if (!formId) {
+      return;
+    }
+
+    // user enter normal form page, go get key from storage
+    const key = await getKeyFromStorage(formId);
+
+    if (key) {
+      chrome.action.setBadgeBackgroundColor({ color: "#4A61C0", tabId });
+      chrome.action.setBadgeTextColor({ color: "#E2E8F0", tabId });
+      chrome.action.setBadgeText({ text: "Fill", tabId });
     }
   }
 });
