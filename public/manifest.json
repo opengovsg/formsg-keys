@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Formkeys",
-  "version": "0.1.0",
-  "description": "My Chrome Extension",
+  "version": "0.1.1",
+  "description": "An extension that helps you to fill out your keys with a simple click.",
   "icons": {
     "16": "icons/brand.png",
     "32": "icons/brand@2x.png",
