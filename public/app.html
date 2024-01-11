@@ -13,24 +13,43 @@
         font-family: "Roboto", sans-serif;
         font-size: 1rem;
         line-height: 1.5;
-        width: 20rem;
+        width: 32rem;
         background-color: #f5f5f5;
       }
 
       #copykey-btn {
-        margin-left: 1rem;
+        margin-right: 0.5rem;
+        padding: 0.25rem;
+        transition: background-color 0.2s ease-in-out;
+        border-radius: 0.25rem;
       }
+      #copykey-btn:hover {
+        background-color: gray;
+      }
+      #copykey-btn:active {
+        background-color: dimgray;
+      }
+
+      #copykey-img {
+        width: 20px;
+        height: 20px;
+        filter: invert(100%);
+      }
+
       .btn-group {
         margin: 2rem;
         display: flex;
         justify-content: center;
       }
+
       .key-container {
         display: flex;
         flex-direction: row;
         background-color: #3c3d40;
         padding: 0.5rem;
+        align-items: center;
       }
+
       #key {
         color: white;
       }
@@ -42,11 +61,10 @@
       <span id="formId"></span>
     </p>
     <div class="key-container">
-      <code id="key"></code>
-    </div>
-    <div class="btn-group">
-      <button id="insertkey-btn">Fill Secret Key</button>
-      <button id="copykey-btn">Copy Key</button>
+      <a id="copykey-btn">
+        <img id="copykey-img" src="./icons/copy.png" />
+      </a>
+      <code id="key">asdasdasd</code>
     </div>
   </body>
   <footer><script defer="text/javascript" src="app.js"></script></footer>

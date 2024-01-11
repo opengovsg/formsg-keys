@@ -39,9 +39,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
   handleInsertKey();
 });
 
-document
-  .getElementById("insertkey-btn")
-  .addEventListener("click", handleInsertKey);
+// document
+//   .getElementById("insertkey-btn")
+//   .addEventListener("click", handleInsertKey);
 
 document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
 
@@ -60,5 +60,6 @@ function handleInsertKey() {
 
 function handleCopyKey() {
   const valueToCopy = document.getElementById("key").innerText;
+  document.getElementById("key").innerHTML = "Copied!";
   navigator.clipboard.writeText(valueToCopy);
 }
