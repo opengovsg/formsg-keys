@@ -5,13 +5,16 @@
   "private": true,
   "scripts": {
     "watch": "node ./node_modules/webpack/bin/webpack.js --mode=production --watch --config config/webpack.config.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js --mode=production --config config/webpack.config.js"
+    "build": "node ./node_modules/webpack/bin/webpack.js --mode=production --config config/webpack.config.js",
+    "build:clean": "rimraf build",
+    "build:prod": "npm run build:clean && node ./node_modules/webpack/bin/webpack.js --mode=production --config config/webpack.production.js"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^0.10.1",
+    "rimraf": "^5.0.5",
     "size-plugin": "^2.0.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^4.10.0",
