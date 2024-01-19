@@ -4,8 +4,7 @@
 
 ## Features
 
-- Feature 1
-- Feature 2
+- Prefills your form secret by clicking on the extension button
 
 ## Install
 
