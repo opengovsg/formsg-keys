@@ -1,6 +1,6 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> Formkeys
+# <img src="webstore/brand-store.png" width="25">  Formkeys
 
-My Chrome Extension
+<img src="webstore/primary.png">
 
 ## Features
 
