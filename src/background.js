@@ -7,6 +7,7 @@ import {
   FORMSG_DOMAIN,
   FORMSG_DASHBOARD_PATH,
   FORMSG_LOCALDEV_DOMAIN,
+  FORMSG_USE_TEMPLATE_PATH,
 } from "./constants";
 
 let lastTabId = -1;
@@ -16,13 +17,24 @@ function resetKey() {
   lastTabId = -1;
   lastKey = -1;
 }
+
+function urlHasKeys(url) {
+  if (
+    url.includes(FORMSG_DASHBOARD_PATH) ||
+    url.includes(FORMSG_USE_TEMPLATE_PATH)
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function handleDownloadCreated(createdItem) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     function callback(data) {
       lastKey = data;
     }
 
-    if (!tabs[0].url.includes(FORMSG_DASHBOARD_PATH)) {
+    if (!urlHasKeys(tabs[0].url)) {
       return;
     }
 
@@ -56,6 +68,20 @@ const RULE_NEW_ENCRYPTED_FORM = {
     new chrome.declarativeContent.PageStateMatcher({
       pageUrl: {
         hostSuffix: FORMSG_DOMAIN,
+        pathContains: FORMSG_USE_TEMPLATE_PATH,
+      },
+      css: ["code.chakra-code"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_DOMAIN,
+        pathContains: FORMSG_USE_TEMPLATE_PATH,
+      },
+      css: ["[name='secretKey']"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_DOMAIN,
         pathContains: FORMSG_ADMINFORM_PATH,
       },
     }),
@@ -78,6 +104,20 @@ const RULE_NEW_ENCRYPTED_FORM = {
         hostSuffix: FORMSG_LOCALDEV_DOMAIN,
         pathContains: FORMSG_ADMINFORM_PATH,
       },
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_LOCALDEV_DOMAIN,
+        pathContains: FORMSG_USE_TEMPLATE_PATH,
+      },
+      css: ["code.chakra-code"],
+    }),
+    new chrome.declarativeContent.PageStateMatcher({
+      pageUrl: {
+        hostSuffix: FORMSG_LOCALDEV_DOMAIN,
+        pathContains: FORMSG_USE_TEMPLATE_PATH,
+      },
+      css: ["[name='secretKey']"],
     }),
   ],
   actions: [new chrome.declarativeContent.ShowAction()],
