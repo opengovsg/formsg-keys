@@ -26,7 +26,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "app.html",
     "default_icon": "icons/brand.png"
   },
   "permissions": [

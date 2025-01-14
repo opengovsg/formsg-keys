@@ -1,4 +1,4 @@
-import { getKeyFromStorage } from "./keys.utils";
+import { getKeyFromStorage, downloadKeyToStorage } from "./keys.utils";
 import { SET_ID, INSERT_KEY } from "./constants";
 import { getFormIdFromAdminUrl } from "./url.utils";
 
@@ -44,6 +44,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
 //   .addEventListener("click", handleInsertKey);
 
 document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
+document.getElementById("addkey-btn").addEventListener("click", handleAddKey);
 
 function handleInsertKey() {
   const { currentId } = localstore;
@@ -62,4 +63,25 @@ function handleCopyKey() {
   const valueToCopy = document.getElementById("key").innerText;
   document.getElementById("key").innerHTML = "Copied!";
   navigator.clipboard.writeText(valueToCopy);
+}
+
+async function handleAddKey() {
+  const { currentId } = localstore;
+  if (!currentId) return;
+
+  // Create and trigger file input
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = '.key,.txt';
+
+  fileInput.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const key = await file.text();
+    await downloadKeyToStorage(currentId, key);
+    setKeyToContent(currentId, key);
+  };
+
+  fileInput.click();
 }
