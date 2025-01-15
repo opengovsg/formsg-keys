@@ -1,4 +1,4 @@
-import { getKeyFromStorage } from "./keys.utils";
+import { getKeyFromStorage, downloadKeyToStorage } from "./keys.utils";
 import { getFormIdFromAdminUrl } from "./url.utils";
 import {
   GET_KEY,
@@ -143,11 +143,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
     if (tabId === lastTabId) {
       // user just downloaded a key, go store key to storage
-      const keyPair = { [formId]: lastKey };
-      console.log(keyPair);
-      chrome.storage.local.set(keyPair, () => {
-        console.log("Data was saved in storage");
-      });
+      downloadKeyToStorage(formId, lastKey);
       resetKey();
       return;
     } else {
@@ -160,7 +156,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
           formId,
           key,
         })
-        .catch((err) => {});
+        .catch((err) => { });
       return;
     }
   }
