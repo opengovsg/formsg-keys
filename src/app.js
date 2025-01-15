@@ -1,6 +1,7 @@
 import { getKeyFromStorage, downloadKeyToStorage } from "./keys.utils";
 import { SET_ID, INSERT_KEY } from "./constants";
 import { getFormIdFromAdminUrl } from "./url.utils";
+import { FORMSG_ADMINFORM_PATH } from "./constants";
 
 const localstore = {};
 function setKeyToContent(formId, key) {
@@ -9,6 +10,16 @@ function setKeyToContent(formId, key) {
   document.getElementById("formId").innerHTML = formId;
   document.getElementById("key").innerHTML = key || "No key found";
 }
+
+chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+  const currentUrl = tabs[0].url;
+  console.log("currentUrl", currentUrl);
+  const addKeyContainer = document.getElementById("addkey-container");
+
+  if (currentUrl.includes(FORMSG_ADMINFORM_PATH)) {
+    addKeyContainer.style.display = "block";
+  }
+});
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.command === SET_ID) {
