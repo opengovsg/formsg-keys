@@ -16,7 +16,9 @@
         "https://*.form.gov.sg/*",
         "https://form.gov.sg/*"
       ],
-      "js": ["content.js"],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_end"
     }
   ],
