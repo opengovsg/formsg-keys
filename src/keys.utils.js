@@ -6,7 +6,7 @@ export const getKeyFromStorage = async (formId) => {
 };
 
 
-export const downloadKeyToStorage = async (formId, key) => {
+export const setKeyToStorage = async (formId, key) => {
   const keyPair = { [formId]: key };
   chrome.storage.local.set(keyPair, () => {
     console.log(`Key (${key}) was saved in storage for formId (${formId})`);
