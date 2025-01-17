@@ -5,6 +5,12 @@ export const getKeyFromStorage = async (formId) => {
   });
 };
 
+export const getAllKeysFromStorage = async () => {
+  return chrome.storage.local.get(null).then((result) => {
+    console.log('All stored keys:', result);
+    return result;
+  });
+};
 
 export const setKeyToStorage = async (formId, key) => {
   const keyPair = { [formId]: key };
