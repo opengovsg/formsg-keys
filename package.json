@@ -1,6 +1,6 @@
 {
   "name": "FormKeys",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "My Chrome Extension",
   "private": true,
   "scripts": {

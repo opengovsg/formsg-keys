@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Formkeys",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "An extension that helps you to fill out your keys with a simple click.",
   "icons": {
     "16": "icons/brand.png",
@@ -16,9 +16,7 @@
         "https://*.form.gov.sg/*",
         "https://form.gov.sg/*"
       ],
-      "js": [
-        "content.js"
-      ],
+      "js": ["content.js"],
       "run_at": "document_end"
     }
   ],
