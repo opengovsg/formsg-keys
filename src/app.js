@@ -56,7 +56,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
 
 document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
 document.getElementById("addkey-btn").addEventListener("click", handleAddKey);
-document.getElementById("downloadkey-btn").addEventListener("click", handleDownloadKey);
+document.getElementById("downloadallkey-btn").addEventListener("click", handleDownloadAllKey);
+document.getElementById("downloadthiskey-btn").addEventListener("click", handleDownloadThisKey);
 
 function handleInsertKey() {
   const { currentId } = localstore;
@@ -98,7 +99,7 @@ async function handleAddKey() {
   fileInput.click();
 }
 
-async function handleDownloadKey() {
+async function handleDownloadAllKey() {
   const { currentId } = localstore;
   if (!currentId) return;
 
@@ -120,4 +121,20 @@ async function handleDownloadKey() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   });
+}
+
+async function handleDownloadThisKey() {
+  const { currentId } = localstore;
+  if (!currentId) return;
+
+  const key = await getKeyFromStorage(currentId);
+  const blob = new Blob([key], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${currentId}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
