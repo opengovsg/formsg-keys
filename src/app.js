@@ -132,7 +132,7 @@ async function handleDownloadThisKey() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `${currentId}.txt`;
+  link.download = `${currentId}.key`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
