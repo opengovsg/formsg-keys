@@ -56,7 +56,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
 
 document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
 document.getElementById("addkey-btn").addEventListener("click", handleAddKey);
-document.getElementById("downloadallkey-btn").addEventListener("click", handleDownloadAllKey);
+// document.getElementById("downloadallkey-btn").addEventListener("click", handleDownloadAllKey);
 document.getElementById("downloadthiskey-btn").addEventListener("click", handleDownloadThisKey);
 
 function handleInsertKey() {
@@ -99,29 +99,29 @@ async function handleAddKey() {
   fileInput.click();
 }
 
-async function handleDownloadAllKey() {
-  const { currentId } = localstore;
-  if (!currentId) return;
+// async function handleDownloadAllKey() {
+//   const { currentId } = localstore;
+//   if (!currentId) return;
 
-  const keys = await getAllKeysFromStorage();
-  // Create downloads for each key-value pair
-  Object.entries(keys).forEach(([formId, key]) => {
-    // Create a blob with the key content
-    const blob = new Blob([key], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
+//   const keys = await getAllKeysFromStorage();
+//   // Create downloads for each key-value pair
+//   Object.entries(keys).forEach(([formId, key]) => {
+//     // Create a blob with the key content
+//     const blob = new Blob([key], { type: 'text/plain' });
+//     const url = URL.createObjectURL(blob);
     
-    // Create temporary link and trigger download
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${formId}.txt`;
-    document.body.appendChild(link);
-    link.click();
+//     // Create temporary link and trigger download
+//     const link = document.createElement('a');
+//     link.href = url;
+//     link.download = `${formId}.txt`;
+//     document.body.appendChild(link);
+//     link.click();
     
-    // Clean up
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  });
-}
+//     // Clean up
+//     document.body.removeChild(link);
+//     URL.revokeObjectURL(url);
+//   });
+// }
 
 async function handleDownloadThisKey() {
   const { currentId } = localstore;
