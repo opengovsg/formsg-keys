@@ -1,4 +1,8 @@
-import { getKeyFromStorage, getAllKeysFromStorage, downloadKeyToStorage } from "./keys.utils";
+import {
+  getKeyFromStorage,
+  getAllKeysFromStorage,
+  setKeyToStorage,
+} from "./keys.utils";
 import { SET_ID, INSERT_KEY } from "./constants";
 import { getFormIdFromAdminUrl } from "./url.utils";
 import { FORMSG_ADMINFORM_PATH } from "./constants";
@@ -11,7 +15,7 @@ function setKeyToContent(formId, key) {
   document.getElementById("key").innerHTML = key || "No key found";
 }
 
-chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   const currentUrl = tabs[0].url;
   console.log("currentUrl", currentUrl);
   const addKeyContainer = document.getElementById("addkey-btn");
@@ -57,7 +61,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, async function (tab) {
 document.getElementById("copykey-btn").addEventListener("click", handleCopyKey);
 document.getElementById("addkey-btn").addEventListener("click", handleAddKey);
 // document.getElementById("downloadallkey-btn").addEventListener("click", handleDownloadAllKey);
-document.getElementById("downloadthiskey-btn").addEventListener("click", handleDownloadThisKey);
+document
+  .getElementById("downloadthiskey-btn")
+  .addEventListener("click", handleDownloadThisKey);
 
 function handleInsertKey() {
   const { currentId } = localstore;
@@ -83,16 +89,16 @@ async function handleAddKey() {
   if (!currentId) return;
 
   // Create and trigger file input
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.accept = '.key,.txt';
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".key,.txt";
 
   fileInput.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const key = await file.text();
-    await downloadKeyToStorage(currentId, key);
+    await setKeyToStorage(currentId, key);
     setKeyToContent(currentId, key);
   };
 
@@ -109,14 +115,14 @@ async function handleAddKey() {
 //     // Create a blob with the key content
 //     const blob = new Blob([key], { type: 'text/plain' });
 //     const url = URL.createObjectURL(blob);
-    
+
 //     // Create temporary link and trigger download
 //     const link = document.createElement('a');
 //     link.href = url;
 //     link.download = `${formId}.txt`;
 //     document.body.appendChild(link);
 //     link.click();
-    
+
 //     // Clean up
 //     document.body.removeChild(link);
 //     URL.revokeObjectURL(url);
@@ -128,9 +134,9 @@ async function handleDownloadThisKey() {
   if (!currentId) return;
 
   const key = await getKeyFromStorage(currentId);
-  const blob = new Blob([key], { type: 'text/plain' });
+  const blob = new Blob([key], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
   link.download = `${currentId}.key`;
   document.body.appendChild(link);
