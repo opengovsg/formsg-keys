@@ -54,10 +54,11 @@
         color: white;
       }
 
-      #addkey-btn {
+      .blue-btn {
         margin-top: 0.5rem;
         margin-left: 0.5rem;
         margin-bottom: 0.5rem;
+        margin-right: 0.5rem;
         padding: 8px 16px;
         background-color: #2196F3;
         color: white;
@@ -68,17 +69,22 @@
         transition: background-color 0.2s ease-in-out;
       }
 
-      #addkey-btn:hover {
+      .blue-btn:hover {
         background-color: #1976D2;
       }
 
-      #addkey-btn:active {
+      .blue-btn:active {
         background-color: #0D47A1;
       }
 
-      #addkey-btn:focus {
+      .blue-btn:focus {
         outline: none;
         box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.4);
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
       }
     </style>
   </head>
@@ -93,8 +99,9 @@
       </a>
       <code id="key">-</code>
     </div>
-    <div id="addkey-container" style="display: none;">
-      <button id="addkey-btn">Add Key</button>
+    <div class="button-container">
+      <button class="blue-btn" id="downloadkey-btn">Download All</button>
+      <button class="blue-btn" id="addkey-btn" style="display: none;">Add Key</button>
     </div>
   </body>
   <footer><script defer="text/javascript" src="app.js"></script></footer>
