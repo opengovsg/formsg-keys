@@ -11,8 +11,8 @@ const localstore = {};
 function setKeyToContent(formId, key) {
   localstore[formId] = key;
   localstore["currentId"] = formId;
-  document.getElementById("formId").innerHTML = formId;
-  document.getElementById("key").innerHTML = key || "No key found";
+  document.getElementById("formId").textContent = formId;
+  document.getElementById("key").textContent = key || "No key found";
 }
 
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -80,7 +80,7 @@ function handleInsertKey() {
 
 function handleCopyKey() {
   const valueToCopy = document.getElementById("key").innerText;
-  document.getElementById("key").innerHTML = "Copied!";
+  document.getElementById("key").textContent = "Copied!";
   navigator.clipboard.writeText(valueToCopy);
 }
 
