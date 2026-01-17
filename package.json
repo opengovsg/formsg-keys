@@ -10,7 +10,7 @@
     "build:prod": "npm run build:clean && node ./node_modules/webpack/bin/webpack.js --mode=production --config config/webpack.production.js"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^6.4.1",
+    "copy-webpack-plugin": "^13.0.1",
     "css-loader": "^6.8.1",
     "file-loader": "^6.2.0",
     "mini-css-extract-plugin": "^0.10.1",
